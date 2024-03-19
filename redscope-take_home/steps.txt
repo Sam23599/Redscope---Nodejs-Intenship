@@ -1,0 +1,32 @@
+PART: 1-
+
+1. First I tried to check the nodejs code inside the web_socket,js and understood it how it was saving files when the plugin was in active state.
+2. updated it's processPayload method such that for ever new url that is visited, a new file is created using/updating the 'id' variable at the desired time.
+3. went a step further and updated the processPayload function such that if a url has been already visited then it's relavant recorded file will be updates instead of creating a new file (made it efficient to avoid redudant files for same url and saved memory)
+
+4. next, now i updated the starthttpserver inside http_serves.js for to send the actual 'id' during the '/api-rrweb-events' api call so that it fetches the relevant and correct file as requested by the user
+
+
+
+PART: 2-
+
+1. As i do not have access to the session start/stop feature i have added 2 buttons of my own to enable that feature on the http://localhost:3000/.
+2. at first i had used UUID library to generate unique identifiers inside the script tag of the index.html, which will be generate and set the sessionId to a unique id's on every click start session button, and will set it to null when stop session button is clicked.
+3. but now, to make it simpler, i have just a variable 'currentSessionId' and incrementing it to simulate the feature of unique sessionId 
+
+
+PART: 3-
+
+1. I think i need to re-update the processPayload() function in web_socket.js file to clear this part.
+2. I have passed a new key-value pair id=sessionId, in payload in bundler.js which i suppose is initially responsible for generating the payload in the first place
+3. after that, it sends the payload as message to web_socket.js in plugin folder, which ultimately sends it to the web_socket server (to node_backend web_socket.js file)
+
+4. It was getting pretty inconvinent to work without the session start/stop feature while still considering their use cases, so i added an extra file popup.html for extension in chrome_plugin folder.
+
+5. I have tried all that i can (cant even mention it all here) but it's not exactly working as i want it to. 
+Also, the unique video as per sessionId can be solved by fixing some code at node_backend/web_socket.js that I added in PART @. I believe, all we need to do is change the urlIdMap object to not be like urlIdMap[url] = id, but instead be urlIdMap[id] = url, so that there will be unique videos based on id and not just url. 
+
+
+PART: 4-
+
+1. I have tried creating a sessionId in Chrome plugin but i keep facing two issues. First, the sessionId isn't persistent(resets to 0 when extension option menu disappears) and pass it properly to bundler.js. Secondly, the bundler.js is not able to fetch the sessionId properly from extension's option menu/popup menu.
